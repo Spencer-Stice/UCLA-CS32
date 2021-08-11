@@ -1,0 +1,157 @@
+Note to Reader:
+
+After writing the code for this project, I ran it with g32 and was alerted with many memory leak errors. After spending nearly 4 hours debugging during which I attended two TA office hours and stumped both TAs, I emailed Professor Carey. Carey said it looked like a rare compiler error. This indicated that somehow my g32 command may not be set up properly.
+
+Description of Design:
+
+My code implements a doubly-linked, non-circular link list without the use of a dummy node. Each node in the sequence contains three member variables: the nodeValue - of type ItemType, a Node* next, and a Node* previous. As I cannot insert images into this document, I will describe what the sequence looks like. If the sequence is empty, then sequence's member variables head and tail, of type Node*, will be set to nullptr. If the sequence has one Node, then both head and tail will poin to the one node in the sequence. If sequence has more than one Node, head and tail will point to the first and last Nodes, respectively.
+
+Pseudocode:
+
+Sequence::insert(const ItemType& value)-
+if empty
+	create a new node and set head and tail to it
+if value should go at the front
+	create a new node at the front and link it properly
+otherwise
+	traverse sequence with a pointer until arriving at the right spot
+	if the node is not added at the end
+		create a new node and link it properly
+	if it is added at the end
+		create a new node and set tail to it
+
+Sequence::insert(int pos, const ItemType& value)-
+if position is valid
+	if empty
+		create a new node and set head and tail to it
+	if position is 0
+		create a new node at the front and link it properly
+	if position is the last available position
+		create a new node and set tail to it
+	otherwise
+		traverse sequence with a pointer until arriving at the right spot
+		create a new node and link it properly
+
+Sequence::remove(const ItemType& value)-
+continue with a pointer until pointer points at the end (checking the node value)
+	if this node should be removed
+		if this node isn't the first node
+			move the traversal pointer back one and erase the next node
+		otherwise
+			if this sequence isn't empty
+				move the pointer to the next node and erase previous
+			if the sequence is empty
+				erase this node
+	if this node shouldn't be removed
+		if the sequence isn't empty now
+			move to the next node
+		otherwise
+			end removal
+
+Sequence::interleave(const Sequence& seq1, const Sequence& seq2, Sequence& result)-
+if result isn't empty
+	erase the first element of result until it is empty
+if the sequences are the same size
+	start at position 0 for the sequences and result
+	until the result position is as large as the two sequences
+		use get() to retrieve the values from the sequences
+		use insert() to insert the value from seq1 into result
+		use insert() to insert the value from seq2 into result
+if the sequences aren't the same size
+	start at position 0 for the sequences and result
+	until the result position is as large as the two sequences
+		if there is more to get from the smaller sequence
+			use get() to retrieve the values from the sequences
+			use insert() to insert the value from seq1 into result
+			use insert() to insert the value from seq2 into result
+		otherwise
+			use get() to retrieve the value from the remaining sequence
+			use insert() to insert the value from the larger seq into result
+if either sequence is empty
+	start at position 0 for the sequences and result
+	until the result position is as large as the 
+		use get() to retrieve the value from the sequence
+		use insert() to insert the value from the seq into result
+if both sequences are empty
+	return
+
+Tests (performed on strings):
+
+Sequence s;
+ItemType item;
+assert(s.empty()); //test empty
+assert(s.size() == 0); //test size
+assert(s.insert(1, "a") == -1); //position too large
+assert(s.erase(1) == false); //position too large
+assert(s.remove("a") == 0); //empty sequence
+assert(s.get(1, item) == false); //empty sequence
+assert(item == ""); //ensure get worked
+assert(s.set(1, "a") == false); //position too large
+assert(s.find("a") == -1); //empty sequence
+assert(s.insert("a") == 0); //insert works for empty
+assert(s.insert("c") == 1); //insert works for non-empty end
+assert(s.insert("b") == 1); //insert works for non-empty middle
+assert(s.size() == 3); //test esi
+assert(s.find("a") == 0); //test find when not empty
+assert(s.get(1, item) == true); //empty sequence
+assert(item == "b"); //ensure get worked
+assert(s.set(1, "a") == true); //test set when not empty
+assert(s.remove("a") == 2); //2 items to remove
+assert(s.size() == 1); //test size for non empty
+assert(s.insert(1, "a") == 1); //position not too large
+Sequence s2;
+assert(s2.insert("z") == 0); //test insert again in preparation for swap
+s.swap(s2); //swap sequences
+assert(s.size() == 1); //test size for non empty after swap
+assert(s2.size() == 2); //test size for non empty after swap
+assert(s2.insert(0, "b") == 0); //position not too large
+assert(s2.get(0, item) == true); //empty sequence
+assert(item == "b"); //ensure get worked for first item
+assert(s2.get(1, item) == true); //empty sequence
+assert(item == "c"); //ensure get worked for middle item
+assert(s2.get(2, item) == true); //empty sequence
+assert(item == "a"); //ensure get worked for last item
+assert(s2.set(1, "a") == true); //set works for middle
+assert(s2.set(2, "j") == true); //set works for end
+assert(s2.set(0, "r") == true); //set works for first item
+assert(s2.find("r") == 0); //test find for beginning
+assert(s2.find("a") == 1); //test find for middle
+assert(s2.find("j") == 2); //test find for end
+assert(s2.erase(0) == true); //erase beginning
+assert(s2.insert(0, "r") == 0); //position not too large
+assert(s2.erase(1) == true); //erase middle
+assert(s2.insert(1, "a") == 0); //position not too large
+assert(s2.erase(2) == true); //erase end
+assert(s2.insert(2, "z") == 2); //position not too large
+assert(s2.insert(2, "z") == 2); //position not too large
+assert(s2.insert(2, "z") == 2); //position not too large
+assert(s2.insert(2, "z") == 2); //position not too large
+assert(s2.remove("z") == 4); //many items to remove
+assert(s2.size() == 2);//test size
+Sequence b(s2);//test copy constructor
+assert(s2.size() == 2);//test size
+s = s2;//test assignment operator
+assert(s.size() == 2);//test size
+Sequence t(s2);//test copy constructor
+assert(subsequence(t,s2) == 0);//test subsequence with a true subsequence
+Sequence p;
+assert(subsequence(t,p) == -1);//test subsequence with an empty sequence
+assert(s2.insert(2,"t") == 2);
+assert(s2.insert(3,"r") == 3);
+assert(s2.insert(4,"a") == 4);
+assert(s2.insert(5,"z") == 5);
+assert(t.insert(2,"z") == 3);
+assert(subsequence(s2,t) == 3);//test subsequence with a true subsequence that starts in the middle
+Sequence e;
+interleave(s2,t,e);//interleave with empty result, different sizes
+assert(e.size() == 9);//test size after interleave
+e = t;
+Sequence i;
+interleave(e,t,s2);//test interleave with a non empty result and same size input sequences
+assert(s2.size() == 6);//test size after interleave
+i = s2;
+Sequence e1;
+Sequence e2;
+interleave(e1, e2, i);//test interleave with non empty result and empty inputs
+assert(i.size() == 6);//test size after interleave
+

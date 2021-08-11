@@ -1,0 +1,8 @@
+﻿  list.cpp
+C:\School\Fresh Wint\CS32\Homework\Homework4\Homework4\Homework4\list.cpp(40,23): warning C4018: '<': signed/unsigned mismatch
+  sorts.cpp
+C:\School\Fresh Wint\CS32\Homework\Homework4\Homework4\Homework4\sorts.cpp(137,37): warning C4018: '<': signed/unsigned mismatch
+C:\School\Fresh Wint\CS32\Homework\Homework4\Homework4\Homework4\sorts.cpp(282,22): warning C4018: '<': signed/unsigned mismatch
+C:\School\Fresh Wint\CS32\Homework\Homework4\Homework4\Homework4\sorts.cpp(293,23): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  Homework4.vcxproj -> C:\School\Fresh Wint\CS32\Homework\Homework4\Homework4\Debug\Homework4.exe

@@ -1,0 +1,371 @@
+Project 3 report : Ghost Racer Video Game
+
+-----------------------------------------------------------
+Description of Public Member Functions
+-----------------------------------------------------------
+Actor classes:
+
+Actor class:
+
+doSomething:
+I decided to define this as a pure virtual function in my base Actor class because all of the actors in the game must do something, and therefore override this base function. In each derived class, this function causes that type of actor to do whatever the spec requires of them. 
+
+isAlive:
+I decided to define this non virtual function in my base actor class because the base class holds the data as to if each actor is currently alive or not with no need to override it.
+
+getVSpeed and getHSpeed:
+I decided to define these two non virtual functions in my base actor class which simply returns the horizontal and vertical speeds of the actor, respectively, with no need to override this because speed data is stored in the base class.
+
+setDead:
+I decided to define this non virtual function in my base actor class simply to set the state of an actor to not alive, no need for overriding.
+
+isAffectedbySpray:
+I decided to make this virtual functions in my base class because, by default, I wanted to make all actors NOT be affected by the spray but allow them to override this function to show that they are affected by the spray.
+
+getActorLane:
+I decided to define this non virtual function in my base actor class because all actors, if they need to be considered, have a lane that they are in. This function just determines which lane the actor is in and returns that lane.
+
+beSprayed:
+I decided to define this virtual function in my base actor class because some actors can be sprayed, but not all, which is why it is not a pure virtual function so that not all classes must define this function as well. In the base class, this function does nothing.
+
+getRelVSpeed:
+This is a non virtual function in my base actor class because all actors have a speed relative to the GR that seems to be used a lot, so this function simply returns that speed so I don't have to duplicate code.
+
+playSound:
+This is a non virtual function in my base actor class because many actors require the ability to play a sound and rather than repeat code, I make this function use the student world pointer that every actor has to play a sound.
+
+setVSpeed and setHSpeed:
+These two non virtual functions simply change the speed of the actor, which is stored in the base actor class, to the input value, either horizontal speed or vertical speed. No need to override.
+
+move:
+This is a virtual function in my base actor class that moves the calling actor in the most generic way as specified by the spec that is common to many actors so that I don't have to repeat lots of code. Certain derived classes do have their own special move algorithms and need to override this, which is why it is virtual.
+
+isCAW:
+This is a virtual function in my base actor class that by default returns true for every actor based on if they are collision avoidance worthy. Some actors are not, however, which is why this is a virtual function so that those actors can override this one.
+
+getWorld:
+This is a non virtual function in my base actor class that simply returns the pointer to the student world that all actors have stored in this base class for various functions, including playing sounds. This cannot be overridden as the base class is the only one with the required pointer.
+
+~Actor:
+This is a virtual destructor in my base actor class that, itself, does nothing. However, it is good programming practice to define such a function, so it exists in my code.
+
+Borderline:
+
+doSomething:
+This is an overridden version of the base function and it simply moved the lines down the screen relative to the GR's speed. It is virtual for good practice.
+
+isCAW:
+This is an overridden version of the base function that returns false as borderlines are not collision avoidance worthy. It is virtual for good practice.
+
+~Borderline:
+Overriden destructor of the base class that is implemented for good practice, but does nothing of significance. Also virtual for good practice.
+
+Agent:
+
+damage:
+This is a virtual function in my agent class that takes in the amount of damage and the death sound to play in case the agent dies. Only agents can take damage, which is why it is defined in this class. Some classes override this function for their more specific algorithms.
+
+beHealed:
+This is a non virtual function that takes an integer as an amount to be healed and adds it to the health of the agent. The health of the agent is stored in this class so there is no reason to override this function.
+
+getHealth:
+Simple accessor function that returns the health of the given agent because the health is stored in the agent class. Not virtual because no other class can access the health.
+
+GhostRacer:
+
+doSomething:
+This virtual function overrides the base function and implements the movement algorithm for GR based on the spec (where pseudocode is given). It takes in user input if applicable and moves the GR accordingly. It also damages the GR and adds sprays as appropriate.
+
+move:
+This virtual function overrides the base function as the GR has a unique movement algorithm based on trig and a max shift per tick.
+
+hitOilSlick:
+This non virtual function tells the GR how to respond to an oil slick, which is unique to the GR which is why this is the only function of this type in the program.
+
+choose a direction as in the spec
+	set the new direction
+	return
+
+This is essentially the entire outline of the function.
+
+damage:
+This virtual function first calls the base function and then decrements the player's lives if the health is at or below 0. This is the only time when damaging could cause the lives to go down which is why it is defined in the GR class.
+
+getSprays:
+This non virtual function simply returns the number of sprays the GR has left, which is stored in the GR class.
+
+incHW:
+This non virtual function simply takes in an integer and increases the holy water the GR has left based on that integer, which is stored in the GR class.
+
+~GhostRacer:
+This virtual destructor is defined here for good practice, it does nothing of consequence.
+
+Ped:
+
+isAffectedbySpray:
+This virtual function overrides the base class function and returns true because all peds are affected by sprays.
+
+useMPD:
+This non virtual function uses the movement plan distance of the ped in the generic way that works for all pedestrians because it is common to all pedestrians. It acts based on the spec, where it uses random integers to set the speed and direction of the pedestrian.
+
+changeMPD:
+This non virtual function takes in an integer and adjusts that peds movement plan distance by that amount, a data value that is stored in the ped class so there is no need to override it.
+
+HumanPed:
+
+doSomething:
+This virtual function overrides the base class function and simply:
+check if I overlap with GR
+	decrement lives
+	end the level
+move
+changeMPD
+useMPD
+
+This function uses many of the generic ped functions to avoid duplicating code. It is unique to this class.
+
+beSprayed:
+This virtual function overrides the base class function and sets the new directions as specified in the spec if the human ped is hit with a spray (too short for pseudocode). It is unique to human peds.
+
+ZombiePed:
+
+doSomething:
+This virtual function overrides the base class function and:
+if I overlap with GR
+	damage GR
+	damage myself
+	return
+otherwise based on my direction
+	set new direction and speed
+	if I am out of ticks till grunt
+		grunt and reset ticks till grunt
+use MPD
+
+This function is unique to the zombie ped class.
+
+damage:
+This virtual function overrides the base class function and, if it is not dead after calling the base class agent damage function, possibly creates a new healing goodie based on the spec and increases the player's score(too short for pseudocode). This damage function is unique to the zombie ped class.
+
+beSprayed:
+This virtual function damages the zombie ped and, if isn't alive, plays the death sound. This function is unique to the zombie ped class.
+
+Holy Water Projectile:
+
+isCAW:
+This virtual function overrides the base class function and returns false because sprays are not collision avoidance worthy actors.
+
+doSomething:
+This virtual function overrides the base class function and:
+if I overlap any appropriate actors
+	set my status to not alive
+	return
+moveForward
+if I am off the screen
+	set my status to not alive
+if I have traveled my max distance
+	set my status to not alive
+
+This function is unique to this class
+
+GRActivatedObject:
+
+isCAW:
+This virtual function returns false and overrides the base class function because all classes of this type are not CAWs, so it is better to define this overarching function here than for each class.
+
+doSomething:
+This virtual function overrides the base class function and:
+moves based on relative speed
+if I overlap with GR
+	do specific activity
+	set my status to not alive
+	play appropriate sound
+	increase the score
+This function is common to all of the GRActivated objects and so is implemented in the base class.
+
+SoulGoodie:
+
+doSomething:
+This virtual function overrides the base class function and
+calls GRActivatedObject's do something with appropriate parameters
+rotates as appropriate
+This function is unique to this class.
+
+doActivity:
+This non virtual function simply increases the souls saved. This is unique to this class so is not virtual.
+
+OilSlick:
+
+doSomething:
+This virtual function overrides the base class function and:
+move relative to GR
+if I overlap GR
+	play oil slick sound
+	call the hit oil slick GR function
+
+This function is unique to this class, and is not similar enough to the generic function to be called separately: it is the SINGLE exception, so does not constitute repeated code.
+
+HolyWaterGoodie:
+
+doSomething:
+This virtual function overrides the base class function and:
+call GRActivatedObject's do something with appropriate parameters
+This function is unique to this class and so is not virtual.
+
+This function is unique to this class
+
+isAffectedbySpray:
+This virtual function overrides the base class function and returns true as this class is affected by sprays.
+
+beSprayed:
+This virtual function overrides the base class function and simply sets the goodie to not alive, which is alright to be duplicated because it is only a single line of code.
+
+doActivity:
+This non virtual function simply increases GR's holy water, which is unique to this class which is why this function is defined here.
+
+Healing Goodie:
+
+doSomething:
+This virtual function overrides the base class function and:
+call GRActivatedObject's doSomething function with appropriate parameters
+
+This function is specific to this class which is why it is not a virtual function.
+
+doActivity:
+This non virtual function simply heals the GR by 10 hp, which is unique to this class which is why it is non virtual.
+
+isAffectedbySpray:
+This virtual function overrides the base class function and returns true because healing goodies are affected by sprays.
+
+beSprayed:
+This virtual function overrides the base class function and simply sets the status to not alive, which is only one line of code so should not be considered repeated code.
+
+ZombieCab:
+
+doSomething:
+This virtual function overrides the base function and:
+if I overlap with GR
+	if I haven't damaged GR yet
+		play my appropriate sound
+		damage GR
+		if I am left of GR
+			set my speed and direction appropriately	
+		otherwise
+			set my speed and direction appropriately
+	note that I have now damaged GR
+move relative to GR
+	if I am moving faster than GR
+		if there is a ZC in front of me
+			lower speed appropriately
+	otherwise
+		if there is a ZC behind me
+			increase speed appropriately
+reduce my movement plan length
+if my plan length is not 0
+	return
+otherwise set my plan length to a rand int as appropriate
+	set my speed as appropriate
+
+This function is unique to this class.
+
+isAffectedbySpray:
+This virtual function overrides the base class function and returns true as ZCs are affected by sprays.
+
+beSprayed:
+This virtual function overrides the base class function and:
+damages myself appropriately
+if I am not alive
+	there is a one in 5 chance that i drop a new oil slick
+	increase the players score
+otherwise
+	play my hurt sound
+	
+		
+Student world class: (note: none of these functions are overridden so no explanation is needed as to to why they are non virtual)
+
+init:
+This is a virtual function (virtual by professor) and:
+reset key values
+add a new ghost racer
+add new yellow borderlines
+add new white borderlines
+(all borderlines are added based on the spec)
+return the continue game integer so that the game begins
+
+move:
+This is a virtual function(virtual by professor) and:
+initialize useful ints
+for each actor
+	do something if alive
+	if the GR is dead
+		return the player died int
+	if the level is completed
+		add the bonus score to the total score	
+		play the appropriate sound
+		return the finished level int
+	if the GR hit a human ped(special case)
+		return the player died int
+using an iterator, delete all dead actors from the screen
+add new yellow and white borderlines to the screen as specified by the spec
+for all of the general actors that have a similar creation algorithm(i.e. human peds, zombie peds, etc)
+	call the possiblyAddActor function with appropriate parameters
+create a random int for the zombie cab
+if the rand int is 0
+	call the try to add ZC function
+call the update status text function
+decrement the current bonus
+return continue game int
+	
+cleanUp:
+This virtual function(virtual by professor) simply deletes the ghost racer and all actors from the screen while ensuring no memory leaks.
+
+soulSaved:
+This non virtual function simply increments the number of saved souls.
+
+endLevel:
+This non virtual function is called when actor interactions should end the level and simply sets a key bool value to false, indicating to the game to stop the level.
+
+checkForZombieCabF/B:
+These two non virtual functions simply check if there is an actor that is CAW in front or behind of the current ZC, respectively. 
+for each actor
+	if the actor meets the above criteria
+		return true
+otherwise return false
+
+addActor:
+Unlike the similar function, this non virtual function always adds and actor to the actor vector based on the input actor pointer it is given.
+
+sprayFirstActor:
+This non virtual function simply examines each of the actors in the actor vector and calls the spray function on the first actor that overlaps the spray, is alive, and is affected by sprays.
+for each actor
+	if the actor meets the above criteria
+		call the spray function for that actor
+		return true so that the spray knows that it is activated
+otherwise return false
+
+overLaps:
+This simple non virtual function returns true if actors overlap and false otherwise based on actor pointers as determined in the spec.
+
+getGRSpeed:
+This simple non virtual function returns the GR's speed as a double.
+
+getGR:
+This simple non virtual function returns a pointer the the GR.
+
+~StudentWorld:
+This non virtual destructor (there are no derived classes) calls the cleanup function to delete all actors.
+
+---------------------------------------
+Missing functionality and known bugs
+---------------------------------------
+I am very pleased to report that after lots of hard hours of work, I believe my game to work perfectly up to spec and can report no known bugs or missing functionality! :)
+
+-------------------------------------
+Design decisions
+-------------------------------------
+This spec was very detailed and the only times I had to make a decision, I later read another part of the spec and realized there was a definition for that activity. For example, at first I designed my own system for determining the boundaries for the lanes but later read a footnote and realized that it was defined. In short, once again, I am pleased to report that I had to make no decisions regarding any gameplay that the spec did not define.
+
+
+
+
+
+

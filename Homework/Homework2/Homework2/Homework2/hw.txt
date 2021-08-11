@@ -1,0 +1,31 @@
+2. First twelve coordinates popped from the stack implementation are:
+
+(6,4)
+(6,3)
+(6,5)
+(7,5)
+(8,5)
+(8,6)
+(8,7)
+(8,8)
+(7,8)
+(6,6)
+(5,4)
+(4,4)
+
+4. First twelve coordinates popped from the queue implementation are:
+
+(6,4)
+(5,4)
+(6,5)
+(6,3)
+(4,4)
+(6,6)
+(7,5)
+(3,4)
+(4,5)
+(8,5)
+(2,4)
+(4,6)
+
+The stack version of this algorithm performs a depth-first search of the maze. In other words, the program follows a certain 'path' through the maze as far as it can until it either reaches the end or gets stuck. If it gets stuck, it tries searching a different path using the same technique. The reason this occurs is because the next cell that is used to scan the surrounding cells is always the one that was most recently added to the stack because of the definition of the stack. If the program starts down one 'path', it keeps adding the next cells in the 'path' onto the end of the stack, which are then the first cells to be searched once the program moves on to the next cell. The queue version, on the other hand, searches each 'path' that it finds simultaneously. It searches for the next cell down one path, then the next cell down another path, and so on until it has checked one additional cell down each discovered path. Then, it repeats this process, making the program search for a path to the end almost radially outward from the start. The reason this occurs is because when a new cell down a certain path is discovered, that cell is added to the end of the queue, and therefore the search down that path does not continue until all other paths have had their 'turn' to be searched as well. Overall, the reason that these two techniques differ is because one searches from the cell that was most recently added to the list of cells to search from (stack) while the other searches from the oldest cell on the list (queue).

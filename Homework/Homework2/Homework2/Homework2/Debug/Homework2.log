@@ -1,0 +1,11 @@
+﻿  eval.cpp
+C:\School\Fresh Wint\CS32\Homework\Homework2\Homework2\Homework2\eval.cpp(79,23): warning C4018: '<': signed/unsigned mismatch
+C:\School\Fresh Wint\CS32\Homework\Homework2\Homework2\Homework2\eval.cpp(88,23): warning C4018: '<': signed/unsigned mismatch
+C:\School\Fresh Wint\CS32\Homework\Homework2\Homework2\Homework2\eval.cpp(98,23): warning C4018: '<': signed/unsigned mismatch
+C:\School\Fresh Wint\CS32\Homework\Homework2\Homework2\Homework2\eval.cpp(107,25): warning C4018: '<': signed/unsigned mismatch
+C:\School\Fresh Wint\CS32\Homework\Homework2\Homework2\Homework2\eval.cpp(120,25): warning C4018: '<': signed/unsigned mismatch
+C:\School\Fresh Wint\CS32\Homework\Homework2\Homework2\Homework2\eval.cpp(141,28): warning C4018: '<': signed/unsigned mismatch
+C:\School\Fresh Wint\CS32\Homework\Homework2\Homework2\Homework2\eval.cpp(147,28): warning C4018: '<': signed/unsigned mismatch
+C:\School\Fresh Wint\CS32\Homework\Homework2\Homework2\Homework2\eval.cpp(149,15): warning C4018: '<': signed/unsigned mismatch
+C:\School\Fresh Wint\CS32\Homework\Homework2\Homework2\Homework2\eval.cpp(232,23): warning C4018: '<': signed/unsigned mismatch
+  Homework2.vcxproj -> C:\School\Fresh Wint\CS32\Homework\Homework2\Homework2\Debug\Homework2.exe

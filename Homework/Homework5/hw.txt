@@ -1,0 +1,57 @@
+1. a. 				50
+			20		60	
+		10	     40     65      70
+	           15      30                  80
+		         25  32              78
+
+
+    b. Pre order: 50, 20, 10, 15, 40, 30, 25, 32, 60, 65, 70, 80, 78
+       In order: 10, 15, 20, 25, 30, 32, 40, 50, 65, 60, 70, 78, 80
+       Post order: 15, 10, 25, 32, 30, 40, 20, 65, 78, 80, 70, 60, 50
+
+    c. 				50
+			 15           60
+                    10       40    65     70
+                           32                 80
+                         25                 78
+			
+2. a. struct Node{
+	int m_value;
+	node* parent = nullptr; //initializing all pointers to nullptr to be safe
+	node* l_child = nullptr;
+	node* r_child = nullptr;
+	}
+b. initialize a bool for remembering if we are done and a cur_parent pointer to keep track of the current parent
+   if the tree is empty
+	allocate a new node with the desired value
+	point the root pointer to this node
+   else
+	while true //i.e. while we are not finished inserting; could use a bool value to keep track of this
+		if our value is equal to the current node's value
+			set the bool value to false //assuming that we don't allow duplicates, we are done now
+		else if our value is less than the node's value
+			if there is a left child
+				follow the current node's left child pointer and store this node as the current parent
+			else
+				allocate a new node and set it's parent pointer equal to the current parent pointer, set the bool to false
+		else if our value is greater than the node's value
+			if there is a right child 
+				follow the current node's right child pointer and store this node as the current parent
+			else
+				allocate a new node and set it's parent pointer equal to the current parent pointer, set the bool to false
+
+3.a.  			7
+		   5        6
+               4     0     2
+
+  b. The array would have the values (int this order starting at array[0]): 7, 5, 6, 4, 0, 2
+  c. Same notation as before, we have: 6, 5, 2, 4, 0
+
+4. a. O(C + S)
+   b. O(logC  + S)
+   c. O(logC + logS)
+   d. O(logS)
+   e. O(1)
+   f. O(logC + S)
+   g. O(S*logS)
+   h. O(C*logS)
